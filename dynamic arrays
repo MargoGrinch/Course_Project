@@ -7,7 +7,7 @@ void function_Difference();
 void function_Transpose();
 void function_MultiplConst();
 void function_Multiplication();
-
+void function_rank();
 
 int main()
 {
