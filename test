@@ -21,7 +21,14 @@ Sprite six;
 Sprite seven;
 Image rectangular;
 Texture rectangulartexture;
-Sprite rectan;
+Sprite rectanA_1;
+Sprite rectanA_2;
+Sprite rectanA_3;
+Sprite rectanA_4;
+Sprite rectanB_1;
+Sprite rectanB_2;
+Sprite rectanB_3;
+Sprite rectanB_4;
 
 int** A_matrix;
 int** B_matrix;
@@ -209,9 +216,37 @@ void initWindow(){
 
     rectangulartexture.loadFromImage(rectangular);
 
-    rectan.setTexture(rectangulartexture);
-    rectan.setTextureRect(IntRect(0,0,64,64));
-    rectan.setPosition(61, 138);
+    rectanA_1.setTexture(rectangulartexture);
+    rectanA_1.setTextureRect(IntRect(0,0,64,64));
+    rectanA_1.setPosition(61, 138);
+
+    rectanA_2.setTexture(rectangulartexture);
+    rectanA_2.setTextureRect(IntRect(0,0,64,64));
+    rectanA_2.setPosition(134, 138);
+
+    rectanA_3.setTexture(rectangulartexture);
+    rectanA_3.setTextureRect(IntRect(0,0,64,64));
+    rectanA_3.setPosition(61, 182);
+
+    rectanA_4.setTexture(rectangulartexture);
+    rectanA_4.setTextureRect(IntRect(0,0,64,64));
+    rectanA_4.setPosition(134, 182);
+
+    rectanB_1.setTexture(rectangulartexture);
+    rectanB_1.setTextureRect(IntRect(0,0,64,64));
+    rectanB_1.setPosition(380, 138);
+
+    rectanB_2.setTexture(rectangulartexture);
+    rectanB_2.setTextureRect(IntRect(0,0,64,64));
+    rectanB_2.setPosition(453, 138);
+
+    rectanB_3.setTexture(rectangulartexture);
+    rectanB_3.setTextureRect(IntRect(0,0,64,64));
+    rectanB_3.setPosition(380, 182);
+
+    rectanB_4.setTexture(rectangulartexture);
+    rectanB_4.setTextureRect(IntRect(0,0,64,64));
+    rectanB_4.setPosition(453, 182);
 }
 
 void drawAll(RenderWindow& window){
@@ -227,7 +262,14 @@ void drawAll(RenderWindow& window){
     window.draw(five);
     window.draw(six);
     window.draw(seven);
-    window.draw(rectan);
+    window.draw(rectanA_1);
+    window.draw(rectanA_2);
+    window.draw(rectanA_3);
+    window.draw(rectanA_4);
+    window.draw(rectanB_1);
+    window.draw(rectanB_2);
+    window.draw(rectanB_3);
+    window.draw(rectanB_4);
     window.display();
 }
 
@@ -330,6 +372,66 @@ void handling_2(int size, RenderWindow& window){
                     }
                 }
             }
+//            if(event.type == Event::MouseButtonPressed && event.key.code == Mouse::Left &&
+//                    x >= 134 && x <= 198 && y >= 138 && y <= 202 ){
+//                Event numberEvent;
+//                printNumber(0, window);
+//                while (1) {
+//                    window.pollEvent(numberEvent);
+//                    Vector2i pos1 = Mouse::getPosition(window);
+//                    int x1 = pos1.x;
+//                    int y1 = pos1.y;
+//                    if(numberEvent.type == Event::MouseButtonPressed && numberEvent.key.code == Mouse::Left
+//                            && (x1 < 61 || x1 > 152 || y1 < 138 || y1 > 182)){
+//                        printf("numberEvent\n");
+//                        break;
+//                    }
+//                    if(numberEvent.type == Event::KeyPressed){
+//                        if(numberEvent.key.code == Keyboard::Num1 || numberEvent.key.code == Keyboard::Numpad1)
+//                        {
+//                            printNumber(1, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num2 || numberEvent.key.code == Keyboard::Numpad2)
+//                        {
+//                            printNumber(2, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num3 || numberEvent.key.code == Keyboard::Numpad3)
+//                        {
+//                            printNumber(3, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num4 || numberEvent.key.code == Keyboard::Numpad4)
+//                        {
+//                            printNumber(4, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num5 || numberEvent.key.code == Keyboard::Numpad5)
+//                        {
+//                            printNumber(5, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num6 || numberEvent.key.code == Keyboard::Numpad6)
+//                        {
+//                            printNumber(6, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num7 || numberEvent.key.code == Keyboard::Numpad7)
+//                        {
+//                            printNumber(7, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num8 || numberEvent.key.code == Keyboard::Numpad8)
+//                        {
+//                            printNumber(8, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num9 || numberEvent.key.code == Keyboard::Numpad9)
+//                        {
+//                            printNumber(9, window);
+//                        } else if(numberEvent.key.code == Keyboard::Num0 || numberEvent.key.code == Keyboard::Numpad0)
+//                        {
+//                            printNumber(0, window);
+//                        } else if(numberEvent.key.code == Keyboard::BackSpace)
+//                        {
+//                            deleteDigit(window);
+//                        }
+//                    }
+//                }
+//            }
+//            if(event.type == Event::MouseButtonPressed && event.key.code == Mouse::Left &&
+//                    x >= 61 && x <= 125 && y >= 182 && y <= 246 ){
+
+//            }
+//            if(event.type == Event::MouseButtonPressed && event.key.code == Mouse::Left &&
+//                    x >= 134 && x <= 198 && y >= 182 && y <= 246 ){
+
+//            }
         }
     }
 }
@@ -346,6 +448,23 @@ void deleteDigit(RenderWindow& window){
     A_matrix[0][0] /= 10;
     text.setString(std::to_string(A_matrix[0][0]));
     text.setPosition(63,153);
+    window.draw(text);
+    drawAll(window);
+}
+
+void printNumber2(int number, RenderWindow& window){
+    window.clear(Color::White);
+    A_matrix[0][1] = A_matrix[0][1]*10 + number;
+    text.setString(std::to_string(A_matrix[0][1]));
+    text.setPosition(136,153);
+    window.draw(text);
+    drawAll(window);
+}
+void deleteDigit2(RenderWindow& window){
+    window.clear(Color::White);
+    A_matrix[0][1] /= 10;
+    text.setString(std::to_string(A_matrix[0][1]));
+    text.setPosition(136,153);
     window.draw(text);
     drawAll(window);
 }
