@@ -1,0 +1,265 @@
+#include "result.h"
+#include <SFML/Graphics.hpp>
+#include <chrono>
+#include <thread>
+
+using namespace sf;
+
+int** A_matrix;
+int** B_matrix;
+
+//functions
+void function_Addition(int size);
+void function_Difference(int size);
+void function_Transpose(int size);
+void function_MultiplConst(int size);
+void function_Multiplication(int size);
+void initial(int size);
+void handling_2(int size, RenderWindow& window);
+void destroy(int size);
+//void function_Rank();
+//functions
+
+void run(){
+
+        RenderWindow window(sf::VideoMode(600, 520), "Matrix Calculator");
+
+        Image heroimage;
+        heroimage.loadFromFile("hero.png");
+
+        Texture herotexture;
+        herotexture.loadFromImage(heroimage);
+
+        Sprite addition;
+        addition.setTexture(herotexture);
+        addition.setTextureRect(IntRect(0,0,83,25));
+        addition.setPosition(245, 100);
+
+        Sprite difference;
+        difference.setTexture(herotexture);
+        difference.setTextureRect(IntRect(0,27,83,29));
+        difference.setPosition(245, 130);
+
+        Sprite transpose;
+        transpose.setTexture(herotexture);
+        transpose.setTextureRect(IntRect(0,54,83,29));
+        transpose.setPosition(245, 160);
+
+        Sprite multiplConst;
+        multiplConst.setTexture(herotexture);
+        multiplConst.setTextureRect(IntRect(0,85,83,29));
+        multiplConst.setPosition(245, 193);
+
+        Sprite multiplication;
+        multiplication.setTexture(herotexture);
+        multiplication.setTextureRect(IntRect(0,115,83,29));
+        multiplication.setPosition(245, 225);
+
+        Sprite rank;
+        rank.setTexture(herotexture);
+        rank.setTextureRect(IntRect(0,145,83,28));
+        rank.setPosition(245, 257);
+
+
+        Image sizeimage;
+        sizeimage.loadFromFile("size.png");
+
+        Texture sizetexture;
+        sizetexture.loadFromImage(sizeimage);
+
+        Sprite two;
+        two.setTexture(sizetexture);
+        two.setTextureRect(IntRect(0,0,83,25));
+        two.setPosition(50, 50);
+
+        Sprite three;
+        three.setTexture(sizetexture);
+        three.setTextureRect(IntRect(87,0,82,26));
+        three.setPosition(137, 50);
+
+        Sprite four;
+        four.setTexture(sizetexture);
+        four.setTextureRect(IntRect(171,0,84,26));
+        four.setPosition(222, 50);
+
+        Sprite five;
+        five.setTexture(sizetexture);
+        five.setTextureRect(IntRect(257,0,83,25));
+        five.setPosition(307, 50);
+
+        Sprite six;
+        six.setTexture(sizetexture);
+        six.setTextureRect(IntRect(341,0,85,25));
+        six.setPosition(392, 50);
+
+        Sprite seven;
+        seven.setTexture(sizetexture);
+        seven.setTextureRect(IntRect(425,0,87,25));
+        seven.setPosition(477, 50);
+
+        int size = 0;
+        initial(size);
+        while (window.isOpen())
+        {
+            Vector2i pos = Mouse::getPosition(window);       // получение координат при нажатии кнопок мышки
+            int x = pos.x;
+            int y = pos.y;
+
+            Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed)
+                {
+                    destroy(size);
+                    window.close();
+                }
+                if (event.type == Event::MouseButtonPressed){
+                    if(event.key.code == Mouse::Left)
+                    {
+                        if(x > 50 && x < 133 && y > 50 && y < 75){
+                            size = 2;
+                            initial(size);
+                            handling_2(size, window);
+                        }
+//                        if(x > 137 && x < 219 && y > 50 && y < 76){
+//                            size = 3;
+//                        }
+//                        if(x > 222 && x < 306 && y > 50 && y < 76){
+//                            size = 4;
+//                        }
+//                        if(x > 307 && x < 390 && y > 50 && y < 75){
+//                            size = 5;
+//                        }
+//                        if(x > 392 && x < 477 && y > 50 && y < 75){
+//                            size = 6;
+//                        }
+//                        if(x > 477 && x < 565 && y > 50 && y < 75){
+//                            size = 7;
+//                        }
+                    }
+                }
+
+
+            }
+//            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+
+                //define function
+//                if(x > 245 && x < 328 && y > 100 && y < 125){
+//                    num_func = 1;
+//                }
+
+//                if(x > 245 && x < 328 && y > 130 && y < 159){
+//                    num_func = 2;
+//                }
+
+//                if(x > 245 && x < 328 && y > 160 && y < 189){
+//                    num_func = 3;
+//                }
+
+//                if(x > 245 && x < 328 && y > 193 && y < 222){
+//                    num_func = 4;
+//                }
+
+//                if(x > 245 && x < 328 && y > 225 && y < 254){
+//                    num_func = 5;
+//                }
+//                if(x > 245 && x < 328 && y > 257 && y < 285){
+//                    num_func = 6;
+//                }
+                //define function
+
+                //define size
+
+                //define size
+
+//            }
+            window.clear(Color::White);
+            window.draw(addition);
+            window.draw(difference);
+            window.draw(transpose);
+            window.draw(multiplConst);
+            window.draw(multiplication);
+            window.draw(rank);
+            window.draw(two);
+            window.draw(three);
+            window.draw(four);
+            window.draw(five);
+            window.draw(six);
+            window.draw(seven);
+            window.display();
+        }
+
+//        switch(num_func){
+//            case 1: function_Addition(A_matrix, B_matrix, size);break;
+//            case 2: function_Difference(A_matrix, B_matrix, size);break;
+//            case 3: function_Transpose(A_matrix, B_matrix, size);break;
+//            case 4: function_MultiplConst(A_matrix, B_matrix, size);break;
+//            case 5: function_Multiplication(A_matrix, B_matrix, size);break;
+//            case 6: function_Rank(A_matrix, B_matrix, size);break;
+//            default: printf("Цифри тільки 1 - 6");
+//        }
+}
+
+void destroy(int size){
+    for(int i = 0; i < size; i++){
+        free(A_matrix[i]);
+    }
+    free(A_matrix);
+
+    for(int i = 0; i < size; i++){
+        free(B_matrix[i]);
+    }
+    free(B_matrix);
+
+}
+void initial(int size){
+    destroy(size);
+    A_matrix = (int**)malloc(size*sizeof(int*));
+    for(int i = 0; i < size; i++){
+        A_matrix[i] = (int *)malloc(size*sizeof(int));
+    }
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+                A_matrix[i][j] = 0;
+        }
+    }
+    B_matrix = (int**)malloc(size*sizeof(int*));
+    for(int i = 0; i < size; i++){
+        B_matrix[i] = (int*)malloc(size*sizeof(int));
+    }
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            B_matrix[i][j] = 0;
+        }
+    }
+    printf("start  size = %i\n", size);
+}
+void handling_2(int size, RenderWindow& window){
+    printf("%s\n", "handl");int i = 0;
+    while (1) {
+        Vector2i pos = Mouse::getPosition(window);       // получение координат при нажатии кнопок мышки
+        int x = pos.x;
+        int y = pos.y;
+        Event event;
+//        printf("x = %i, y = %i\n", x, y);
+//        std::this_thread::sleep_for(std::chrono::seconds(2));
+        while (window.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+            {
+                destroy(size);
+                window.close();
+            }
+            if(x > 61 && x < 152 && y > 138 && y < 182){
+                if (event.type == Event::KeyPressed){
+                    if(event.key.code == Keyboard::Num1 || event.key.code == Keyboard::Numpad1)
+                    {
+                        printf("HELLO!!!!!!!!!!!");
+                        A_matrix[0][0] = A_matrix[0][0]*10 + 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
