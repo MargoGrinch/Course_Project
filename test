@@ -1,101 +1,53 @@
 #include "result.h"
 #include <SFML/Graphics.hpp>
-#include <chrono>
-#include <thread>
 
 using namespace sf;
 
+Image heroimage;
+Texture herotexture;
+Sprite addition;
+Sprite difference;
+Sprite transpose;
+Sprite multiplConst;
+Sprite multiplication;
+Sprite rank;
+Image sizeimage;
+Texture sizetexture;
+Sprite two;
+Sprite three;
+Sprite four;
+Sprite five;
+Sprite six;
+Sprite seven;
+Image rectangular;
+Texture rectangulartexture;
+Sprite rectan;
+
 int** A_matrix;
 int** B_matrix;
+Text text;
+Font font;
 
 //functions
+void initWindow();
+void drawAll(RenderWindow& window);
+void initial(int size);
+void handling_2(int size, RenderWindow& window);
+void destroy(int size);
+void printNumber(int number, RenderWindow& window);
+void deleteDigit(RenderWindow& window);
+
 void function_Addition(int size);
 void function_Difference(int size);
 void function_Transpose(int size);
 void function_MultiplConst(int size);
 void function_Multiplication(int size);
-void initial(int size);
-void handling_2(int size, RenderWindow& window);
-void destroy(int size);
-//void function_Rank();
 //functions
 
 void run(){
 
         RenderWindow window(sf::VideoMode(600, 520), "Matrix Calculator");
-
-        Image heroimage;
-        heroimage.loadFromFile("hero.png");
-
-        Texture herotexture;
-        herotexture.loadFromImage(heroimage);
-
-        Sprite addition;
-        addition.setTexture(herotexture);
-        addition.setTextureRect(IntRect(0,0,83,25));
-        addition.setPosition(245, 100);
-
-        Sprite difference;
-        difference.setTexture(herotexture);
-        difference.setTextureRect(IntRect(0,27,83,29));
-        difference.setPosition(245, 130);
-
-        Sprite transpose;
-        transpose.setTexture(herotexture);
-        transpose.setTextureRect(IntRect(0,54,83,29));
-        transpose.setPosition(245, 160);
-
-        Sprite multiplConst;
-        multiplConst.setTexture(herotexture);
-        multiplConst.setTextureRect(IntRect(0,85,83,29));
-        multiplConst.setPosition(245, 193);
-
-        Sprite multiplication;
-        multiplication.setTexture(herotexture);
-        multiplication.setTextureRect(IntRect(0,115,83,29));
-        multiplication.setPosition(245, 225);
-
-        Sprite rank;
-        rank.setTexture(herotexture);
-        rank.setTextureRect(IntRect(0,145,83,28));
-        rank.setPosition(245, 257);
-
-
-        Image sizeimage;
-        sizeimage.loadFromFile("size.png");
-
-        Texture sizetexture;
-        sizetexture.loadFromImage(sizeimage);
-
-        Sprite two;
-        two.setTexture(sizetexture);
-        two.setTextureRect(IntRect(0,0,83,25));
-        two.setPosition(50, 50);
-
-        Sprite three;
-        three.setTexture(sizetexture);
-        three.setTextureRect(IntRect(87,0,82,26));
-        three.setPosition(137, 50);
-
-        Sprite four;
-        four.setTexture(sizetexture);
-        four.setTextureRect(IntRect(171,0,84,26));
-        four.setPosition(222, 50);
-
-        Sprite five;
-        five.setTexture(sizetexture);
-        five.setTextureRect(IntRect(257,0,83,25));
-        five.setPosition(307, 50);
-
-        Sprite six;
-        six.setTexture(sizetexture);
-        six.setTextureRect(IntRect(341,0,85,25));
-        six.setPosition(392, 50);
-
-        Sprite seven;
-        seven.setTexture(sizetexture);
-        seven.setTextureRect(IntRect(425,0,87,25));
-        seven.setPosition(477, 50);
+        initWindow();
 
         int size = 0;
         initial(size);
@@ -174,19 +126,7 @@ void run(){
 
 //            }
             window.clear(Color::White);
-            window.draw(addition);
-            window.draw(difference);
-            window.draw(transpose);
-            window.draw(multiplConst);
-            window.draw(multiplication);
-            window.draw(rank);
-            window.draw(two);
-            window.draw(three);
-            window.draw(four);
-            window.draw(five);
-            window.draw(six);
-            window.draw(seven);
-            window.display();
+            drawAll(window);
         }
 
 //        switch(num_func){
@@ -198,6 +138,97 @@ void run(){
 //            case 6: function_Rank(A_matrix, B_matrix, size);break;
 //            default: printf("Цифри тільки 1 - 6");
 //        }
+}
+
+void initWindow(){
+    font.loadFromFile("aBosaNova Bold.ttf");
+
+    text.setFont(font);
+    text.setCharacterSize(16);
+    text.setColor(Color::Black);
+    text.setStyle(Text::Italic);
+
+    heroimage.loadFromFile("hero.png");
+
+    herotexture.loadFromImage(heroimage);
+
+
+    addition.setTexture(herotexture);
+    addition.setTextureRect(IntRect(0,0,83,25));
+    addition.setPosition(245, 100);
+
+    difference.setTexture(herotexture);
+    difference.setTextureRect(IntRect(0,27,83,29));
+    difference.setPosition(245, 130);
+
+    transpose.setTexture(herotexture);
+    transpose.setTextureRect(IntRect(0,54,83,29));
+    transpose.setPosition(245, 160);
+
+    multiplConst.setTexture(herotexture);
+    multiplConst.setTextureRect(IntRect(0,85,83,29));
+    multiplConst.setPosition(245, 193);
+
+    multiplication.setTexture(herotexture);
+    multiplication.setTextureRect(IntRect(0,115,83,29));
+    multiplication.setPosition(245, 225);
+
+    rank.setTexture(herotexture);
+    rank.setTextureRect(IntRect(0,145,83,28));
+    rank.setPosition(245, 257);
+
+    sizeimage.loadFromFile("size.png");
+
+    sizetexture.loadFromImage(sizeimage);
+
+    two.setTexture(sizetexture);
+    two.setTextureRect(IntRect(0,0,83,25));
+    two.setPosition(50, 50);
+
+    three.setTexture(sizetexture);
+    three.setTextureRect(IntRect(87,0,82,26));
+    three.setPosition(137, 50);
+
+    four.setTexture(sizetexture);
+    four.setTextureRect(IntRect(171,0,84,26));
+    four.setPosition(222, 50);
+
+    five.setTexture(sizetexture);
+    five.setTextureRect(IntRect(257,0,83,25));
+    five.setPosition(307, 50);
+
+    six.setTexture(sizetexture);
+    six.setTextureRect(IntRect(341,0,85,25));
+    six.setPosition(392, 50);
+
+    seven.setTexture(sizetexture);
+    seven.setTextureRect(IntRect(425,0,87,25));
+    seven.setPosition(477, 50);
+
+    rectangular.loadFromFile("rectangular.png");
+
+    rectangulartexture.loadFromImage(rectangular);
+
+    rectan.setTexture(rectangulartexture);
+    rectan.setTextureRect(IntRect(0,0,64,64));
+    rectan.setPosition(61, 138);
+}
+
+void drawAll(RenderWindow& window){
+    window.draw(addition);
+    window.draw(difference);
+    window.draw(transpose);
+    window.draw(multiplConst);
+    window.draw(multiplication);
+    window.draw(rank);
+    window.draw(two);
+    window.draw(three);
+    window.draw(four);
+    window.draw(five);
+    window.draw(six);
+    window.draw(seven);
+    window.draw(rectan);
+    window.display();
 }
 
 void destroy(int size){
@@ -235,31 +266,86 @@ void initial(int size){
     printf("start  size = %i\n", size);
 }
 void handling_2(int size, RenderWindow& window){
-    printf("%s\n", "handl");int i = 0;
     while (1) {
         Vector2i pos = Mouse::getPosition(window);       // получение координат при нажатии кнопок мышки
         int x = pos.x;
         int y = pos.y;
         Event event;
-//        printf("x = %i, y = %i\n", x, y);
-//        std::this_thread::sleep_for(std::chrono::seconds(2));
         while (window.pollEvent(event))
         {
-            if (event.type == Event::Closed)
+            if(event.type == Event::Closed)
             {
                 destroy(size);
                 window.close();
             }
-            if(x > 61 && x < 152 && y > 138 && y < 182){
-                if (event.type == Event::KeyPressed){
-                    if(event.key.code == Keyboard::Num1 || event.key.code == Keyboard::Numpad1)
-                    {
-                        printf("HELLO!!!!!!!!!!!");
-                        A_matrix[0][0] = A_matrix[0][0]*10 + 1;
+            if(event.type == Event::MouseButtonPressed && event.key.code == Mouse::Left &&
+                    x >= 61 && x <= 152 && y >= 138 && y <= 182 ){
+                Event numberEvent;
+                printNumber(0, window);
+                while (1) {
+                    window.pollEvent(numberEvent);
+                    Vector2i pos1 = Mouse::getPosition(window);
+                    int x1 = pos1.x;
+                    int y1 = pos1.y;
+                    if(numberEvent.type == Event::MouseButtonPressed && numberEvent.key.code == Mouse::Left
+                            && (x1 < 61 || x1 > 152 || y1 < 138 || y1 > 182)){
+                        printf("numberEvent\n");
+                        break;
+                    }
+                    if(numberEvent.type == Event::KeyPressed){
+                        if(numberEvent.key.code == Keyboard::Num1 || numberEvent.key.code == Keyboard::Numpad1)
+                        {
+                            printNumber(1, window);
+                        } else if(numberEvent.key.code == Keyboard::Num2 || numberEvent.key.code == Keyboard::Numpad2)
+                        {
+                            printNumber(2, window);
+                        } else if(numberEvent.key.code == Keyboard::Num3 || numberEvent.key.code == Keyboard::Numpad3)
+                        {
+                            printNumber(3, window);
+                        } else if(numberEvent.key.code == Keyboard::Num4 || numberEvent.key.code == Keyboard::Numpad4)
+                        {
+                            printNumber(4, window);
+                        } else if(numberEvent.key.code == Keyboard::Num5 || numberEvent.key.code == Keyboard::Numpad5)
+                        {
+                            printNumber(5, window);
+                        } else if(numberEvent.key.code == Keyboard::Num6 || numberEvent.key.code == Keyboard::Numpad6)
+                        {
+                            printNumber(6, window);
+                        } else if(numberEvent.key.code == Keyboard::Num7 || numberEvent.key.code == Keyboard::Numpad7)
+                        {
+                            printNumber(7, window);
+                        } else if(numberEvent.key.code == Keyboard::Num8 || numberEvent.key.code == Keyboard::Numpad8)
+                        {
+                            printNumber(8, window);
+                        } else if(numberEvent.key.code == Keyboard::Num9 || numberEvent.key.code == Keyboard::Numpad9)
+                        {
+                            printNumber(9, window);
+                        } else if(numberEvent.key.code == Keyboard::Num0 || numberEvent.key.code == Keyboard::Numpad0)
+                        {
+                            printNumber(0, window);
+                        } else if(numberEvent.key.code == Keyboard::BackSpace)
+                        {
+                            deleteDigit(window);
+                        }
                     }
                 }
             }
         }
     }
 }
-
+void printNumber(int number, RenderWindow& window){
+    window.clear(Color::White);
+    A_matrix[0][0] = A_matrix[0][0]*10 + number;
+    text.setString(std::to_string(A_matrix[0][0]));
+    text.setPosition(63,153);
+    window.draw(text);
+    drawAll(window);
+}
+void deleteDigit(RenderWindow& window){
+    window.clear(Color::White);
+    A_matrix[0][0] /= 10;
+    text.setString(std::to_string(A_matrix[0][0]));
+    text.setPosition(63,153);
+    window.draw(text);
+    drawAll(window);
+}
