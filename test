@@ -1,5 +1,6 @@
 #include "result.h"
 #include <SFML/Graphics.hpp>
+#include "arithmetic_functions.h"
 
 using namespace sf;
 
@@ -19,6 +20,9 @@ Sprite four;
 Sprite five;
 Sprite six;
 Sprite seven;
+Image equalimage;
+Texture equaltexture;
+Sprite equal;
 Image rectangular;
 Texture rectangulartexture;
 Sprite rectanA_1;
@@ -36,6 +40,7 @@ Sprite rectan_rez_4;
 
 int** A_matrix;
 int** B_matrix;
+int** C_matrix;
 Text text;
 Font font;
 
@@ -45,6 +50,7 @@ void drawAll(RenderWindow& window);
 void initial(int size);
 void handling_2(int size, RenderWindow& window);
 void destroy(int size);
+
 /*for A_matrix*/
 void A_printNumber1(int number, RenderWindow& window);
 void A_deleteDigit1(RenderWindow& window);
@@ -67,16 +73,20 @@ void B_printNumber4(int number, RenderWindow& window);
 void B_deleteDigit4(RenderWindow& window);
 /*for B_matrix*/
 
-void function_Addition(int size);
-void function_Difference(int size);
-void function_Transpose(int size);
-void function_MultiplConst(int size);
-void function_Multiplication(int size);
+int numberSizeCounter(int number){
+    int count = 0;
+    while(number != 0){
+        number /= 10;
+        count++;
+    }
+    return count;
+}
+void getFinallResult(int option, int size);
 //functions
 
 void run(){
 
-        RenderWindow window(sf::VideoMode(600, 520), "Matrix Calculator");
+        RenderWindow window(sf::VideoMode(900, 520), "Matrix Calculator");
         int size = 2;
         initial(size);
         initWindow();
@@ -100,6 +110,8 @@ void run(){
                         if(x > 50 && x < 133 && y > 50 && y < 75){
                             size = 2;
                             initial(size);
+                            window.clear(Color::White);
+                            drawAll(window);
                             handling_2(size, window);
                         }
 //                        if(x > 137 && x < 219 && y > 50 && y < 76){
@@ -119,54 +131,10 @@ void run(){
 //                        }
                     }
                 }
-
-
             }
-//            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-
-                //define function
-//                if(x > 245 && x < 328 && y > 100 && y < 125){
-//                    num_func = 1;
-//                }
-
-//                if(x > 245 && x < 328 && y > 130 && y < 159){
-//                    num_func = 2;
-//                }
-
-//                if(x > 245 && x < 328 && y > 160 && y < 189){
-//                    num_func = 3;
-//                }
-
-//                if(x > 245 && x < 328 && y > 193 && y < 222){
-//                    num_func = 4;
-//                }
-
-//                if(x > 245 && x < 328 && y > 225 && y < 254){
-//                    num_func = 5;
-//                }
-//                if(x > 245 && x < 328 && y > 257 && y < 285){
-//                    num_func = 6;
-//                }
-                //define function
-
-                //define size
-
-                //define size
-
-//            }
             window.clear(Color::White);
             drawAll(window);
         }
-
-//        switch(num_func){
-//            case 1: function_Addition(A_matrix, B_matrix, size);break;
-//            case 2: function_Difference(A_matrix, B_matrix, size);break;
-//            case 3: function_Transpose(A_matrix, B_matrix, size);break;
-//            case 4: function_MultiplConst(A_matrix, B_matrix, size);break;
-//            case 5: function_Multiplication(A_matrix, B_matrix, size);break;
-//            case 6: function_Rank(A_matrix, B_matrix, size);break;
-//            default: printf("Цифри тільки 1 - 6");
-//        }
 }
 
 void initWindow(){
@@ -234,6 +202,14 @@ void initWindow(){
     seven.setTextureRect(IntRect(425,0,87,25));
     seven.setPosition(477, 50);
 
+    equalimage.loadFromFile("equal.png");
+
+    equaltexture.loadFromImage(equalimage);
+
+    equal.setTexture(equaltexture);
+    equal.setTextureRect(IntRect(0,0,64,64));
+    equal.setPosition(550, 160);
+
     rectangular.loadFromFile("rectangular.png");
 
     rectangulartexture.loadFromImage(rectangular);
@@ -272,19 +248,19 @@ void initWindow(){
 
     rectan_rez_1.setTexture(rectangulartexture);
     rectan_rez_1.setTextureRect(IntRect(0,0,64,64));
-    rectan_rez_1.setPosition(220.5, 300);
+    rectan_rez_1.setPosition(650, 138);
 
     rectan_rez_2.setTexture(rectangulartexture);
     rectan_rez_2.setTextureRect(IntRect(0,0,64,64));
-    rectan_rez_2.setPosition(293.5, 300);
+    rectan_rez_2.setPosition(723, 138);
 
     rectan_rez_3.setTexture(rectangulartexture);
     rectan_rez_3.setTextureRect(IntRect(0,0,64,64));
-    rectan_rez_3.setPosition(220.5, 344);
+    rectan_rez_3.setPosition(650, 182);
 
     rectan_rez_4.setTexture(rectangulartexture);
     rectan_rez_4.setTextureRect(IntRect(0,0,64,64));
-    rectan_rez_4.setPosition(293.5, 344);
+    rectan_rez_4.setPosition(723, 182);
 }
 
 void drawAll(RenderWindow& window){
@@ -300,6 +276,7 @@ void drawAll(RenderWindow& window){
     window.draw(five);
     window.draw(six);
     window.draw(seven);
+    window.draw(equal);
     window.draw(rectanA_1);
     window.draw(rectanA_2);
     window.draw(rectanA_3);
@@ -312,6 +289,7 @@ void drawAll(RenderWindow& window){
     window.draw(rectan_rez_2);
     window.draw(rectan_rez_3);
     window.draw(rectan_rez_4);
+
 /*for A_matrix*/
     text.setString(std::to_string(A_matrix[0][0]));
     text.setPosition(65,158);
@@ -348,6 +326,24 @@ void drawAll(RenderWindow& window){
     window.draw(text);
 /*for B_matrix*/
 
+/*for C_matrix*/
+    text.setString(std::to_string(C_matrix[0][0]));
+    text.setPosition(654,158);
+    window.draw(text);
+
+    text.setString(std::to_string(C_matrix[0][1]));
+    text.setPosition(727,158);
+    window.draw(text);
+
+    text.setString(std::to_string(C_matrix[1][0]));
+    text.setPosition(654,202);
+    window.draw(text);
+
+    text.setString(std::to_string(C_matrix[1][1]));
+    text.setPosition(727,202);
+    window.draw(text);
+/*for C_matrix*/
+
     window.display();
 }
 
@@ -360,8 +356,11 @@ void destroy(int size){
     for(int i = 0; i < size; i++){
         free(B_matrix[i]);
     }
-    free(B_matrix);
-
+    free(C_matrix);
+    for(int i = 0; i < size; i++){
+        free(C_matrix[i]);
+    }
+    free(C_matrix);
 }
 void initial(int size){
     A_matrix = (int**)malloc(size*sizeof(int*));
@@ -382,10 +381,20 @@ void initial(int size){
             B_matrix[i][j] = 0;
         }
     }
+    C_matrix = (int**)malloc(size*sizeof(int*));
+    for(int i = 0; i < size; i++){
+        C_matrix[i] = (int*)malloc(size*sizeof(int));
+    }
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            C_matrix[i][j] = 0;
+        }
+    }
     printf("start  size = %i\n", size);
 }
 void handling_2(int size, RenderWindow& window){
-    while (1) {
+    int gameOver = 1;
+    while (gameOver) {
         Vector2i pos = Mouse::getPosition(window);       // получение координат при нажатии кнопок мышки
         int x = pos.x;
         int y = pos.y;
@@ -810,11 +819,41 @@ void handling_2(int size, RenderWindow& window){
                 }
             }
 //for B_matrix
+            if (event.type == Event::MouseButtonPressed && event.key.code == Mouse::Left){
+                //define function
+                if(x > 245 && x < 328 && y > 100 && y < 125){
+                    getFinallResult(1, size);
+                    gameOver = 0;
+                    break;
+                }
+                if(x > 245 && x < 328 && y > 130 && y < 159){
+                    getFinallResult(2, size);
+                    gameOver = 0;
+                    break;
+                }
+                if(x > 245 && x < 328 && y > 160 && y < 189){
+                    getFinallResult(3, size);
+                    gameOver = 0;
+                    break;
+                }
+                if(x > 245 && x < 328 && y > 193 && y < 222){
+                    getFinallResult(4, size);
+                    gameOver = 0;
+                    break;
+                }
+                if(x > 245 && x < 328 && y > 225 && y < 254){
+                    getFinallResult(5, size);
+                    gameOver = 0;
+                    break;
+                }
+            }
         }
     }
 }
+
 /*for A_matrix*/
 void A_printNumber1(int number, RenderWindow& window){
+    if(numberSizeCounter(A_matrix[0][0]) > 4) return;
     window.clear(Color::White);
     A_matrix[0][0] = A_matrix[0][0]*10 + number;
     drawAll(window);
@@ -824,8 +863,8 @@ void A_deleteDigit1(RenderWindow& window){
     A_matrix[0][0] /= 10;
     drawAll(window);
 }
-
 void A_printNumber2(int number, RenderWindow& window){
+    if(numberSizeCounter(A_matrix[0][1]) > 4) return;
     window.clear(Color::White);
     A_matrix[0][1] = A_matrix[0][1]*10 + number;
     drawAll(window);
@@ -836,6 +875,7 @@ void A_deleteDigit2(RenderWindow& window){
     drawAll(window);
 }
 void A_printNumber3(int number, RenderWindow& window){
+    if(numberSizeCounter(A_matrix[1][0]) > 4) return;
     window.clear(Color::White);
     A_matrix[1][0] = A_matrix[1][0]*10 + number;
     drawAll(window);
@@ -846,6 +886,7 @@ void A_deleteDigit3(RenderWindow& window){
     drawAll(window);
 }
 void A_printNumber4(int number, RenderWindow& window){
+    if(numberSizeCounter(A_matrix[1][1]) > 4) return;
     window.clear(Color::White);
     A_matrix[1][1] = A_matrix[1][1]*10 + number;
     drawAll(window);
@@ -859,6 +900,7 @@ void A_deleteDigit4(RenderWindow& window){
 
 /*for B_matrix*/
 void B_printNumber1(int number, RenderWindow& window){
+    if(numberSizeCounter(B_matrix[0][0]) > 4) return;
     window.clear(Color::White);
     B_matrix[0][0] = B_matrix[0][0]*10 + number;
     drawAll(window);
@@ -868,8 +910,8 @@ void B_deleteDigit1(RenderWindow& window){
     B_matrix[0][0] /= 10;
     drawAll(window);
 }
-
 void B_printNumber2(int number, RenderWindow& window){
+    if(numberSizeCounter(B_matrix[0][1]) > 4) return;
     window.clear(Color::White);
     B_matrix[0][1] = B_matrix[0][1]*10 + number;
     drawAll(window);
@@ -880,6 +922,7 @@ void B_deleteDigit2(RenderWindow& window){
     drawAll(window);
 }
 void B_printNumber3(int number, RenderWindow& window){
+    if(numberSizeCounter(B_matrix[1][0]) > 4) return;
     window.clear(Color::White);
     B_matrix[1][0] = B_matrix[1][0]*10 + number;
     drawAll(window);
@@ -890,6 +933,7 @@ void B_deleteDigit3(RenderWindow& window){
     drawAll(window);
 }
 void B_printNumber4(int number, RenderWindow& window){
+    if(numberSizeCounter(B_matrix[1][1]) > 4) return;
     window.clear(Color::White);
     B_matrix[1][1] = B_matrix[1][1]*10 + number;
     drawAll(window);
@@ -900,3 +944,14 @@ void B_deleteDigit4(RenderWindow& window){
     drawAll(window);
 }
 /*for B_matrix*/
+
+void getFinallResult(int option, int size){
+    switch(option){
+        case 1: function_Addition(A_matrix, B_matrix, C_matrix, size);break;
+        case 2: function_Difference(A_matrix, B_matrix, C_matrix, size);break;
+        case 3: function_TransposeA(A_matrix, B_matrix, C_matrix, size);break;
+        case 4: function_TransposeB(A_matrix, B_matrix, C_matrix, size);break;
+        case 5: function_Multiplication(A_matrix, B_matrix, C_matrix, size);break;
+        default: printf("Цифри тільки 1 - 6");
+    }
+}
